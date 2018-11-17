@@ -1,12 +1,13 @@
+from sys import getsizeof
+from time import time
+from json import loads,dumps
 from utils.rss_parser import rss_parser
 from lastfm.lastfm_wrapper import lastfm_wrapper
 from utils.wiki_subgenre_scraper import wiki_subgenre_scraper
-import json
-import time
-import sys
+
 
 MAX_LIMIT = 187
-LIMIT = 1
+LIMIT = 50
 
 
 def build_json_schema():
@@ -17,7 +18,7 @@ def build_json_schema():
             wiki_subgenre_scraper()
             with open('assets/genres.json','r') as f:
                 genre_j = f.read()
-    genre_super_dict = json.loads(genre_j)
+    genre_super_dict = loads(genre_j)
 
     # build json schema
     music_mentions = {"music_mentions":[]}
@@ -95,7 +96,7 @@ def main():
     music_mentions = add_entries_to_json(artist_mentioned=artist_mentioned,music_mentions=music_mentions)
     music_mentions = remove_empty(music_mentions)
 
-    jmm = json.dumps(music_mentions, separators=(",",":"))
+    jmm = dumps(music_mentions, separators=(",",":"))
     with open("sample.json",'w') as f:
         f.write(str(jmm))
 
@@ -104,11 +105,11 @@ def main():
         total_totals += mm["genre"]["total"]
     print("Total number of entries from maximum of {} blog feed(s): {}"
           .format(LIMIT if LIMIT < MAX_LIMIT else MAX_LIMIT,total_totals))
-    print("Size of json data: {} bytes".format(sys.getsizeof(jmm)))
+    print("Size of json data: {} bytes".format(getsizeof(jmm)))
 
 
 if __name__ == '__main__':
-    start = time.time()
+    start = time()
     main()
     print("\nTotal runtime for {} feed(s) was {} seconds."
-          .format(LIMIT if LIMIT < MAX_LIMIT else MAX_LIMIT,round(time.time() - start, 2)))
+          .format(LIMIT if LIMIT < MAX_LIMIT else MAX_LIMIT,round(time() - start, 2)))
