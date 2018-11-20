@@ -6,7 +6,4 @@ lib64
 .idea/
 pip-selfcheck.json
 pyvenv.cfg
-sample.json
-assets/example.txt
-assets/schema.txt
 assets/lastfmapi.json

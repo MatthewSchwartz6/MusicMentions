@@ -7,7 +7,7 @@ from utils.wiki_subgenre_scraper import wiki_subgenre_scraper
 
 
 MAX_LIMIT = 187
-LIMIT = 50
+LIMIT = 187
 
 
 def build_json_schema():
@@ -97,7 +97,7 @@ def main():
     music_mentions = remove_empty(music_mentions)
 
     jmm = dumps(music_mentions, separators=(",",":"))
-    with open("sample.json",'w') as f:
+    with open("assets/sample.json",'w') as f:
         f.write(str(jmm))
 
     total_totals = 0
