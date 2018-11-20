@@ -1,4 +1,5 @@
 #coding=utf8
+from time import strftime
 import feedparser
 import grequests
 from requests import Session
@@ -11,6 +12,7 @@ class rss_parser:
 
     def __init__(self):
         self.titles = []
+        self.time_format = "%d-%m-%Y %H:%M:%S"
 
     def get_titles(self):
         return self.titles
@@ -48,14 +50,15 @@ class rss_parser:
             #     print('title key error')
             for entry in feed['entries']:
                 try:
-                    self.titles.append({"title_name":entry['title'], "title_date":entry['updated']})
+                    title_date = strftime(self.time_format, entry['updated_parsed'])
+                    self.titles.append({"title_name":entry['title'], "title_date": title_date})
                 except AttributeError:
-                    print("attribute error")
+                    pass
                 except KeyError:
-                    print("key error")
+                    pass
 
 
 if __name__ == '__main__':
     rss = rss_parser()
-    rss.parse(1)
+    rss.parse(187)
     print(rss.get_titles())
