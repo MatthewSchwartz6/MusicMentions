@@ -26,7 +26,7 @@ def build_json_schema():
         g_schema = {"genre":{"name":"","total":0,"date_mentioned":[],"artists_mentioned":[],"subgenres":[]}}
         g_schema["genre"]["name"] = genre
         for sub_g in genre_super_dict[genre]:
-            s_g_schema = {"name":"","total":0,"date_mentioned":[]}
+            s_g_schema = {"name":"","total":0,"date_mentioned":[],"artists":[]}
             s_g_schema["name"] = sub_g
             g_schema["genre"]["subgenres"].append(s_g_schema)
         music_mentions["music_mentions"].append(g_schema)
@@ -53,6 +53,8 @@ def add_entries_to_json(artist_mentioned, music_mentions):
                             if g['name'].lower() == genre.lower():
                                 g["total"] += 1
                                 g["date_mentioned"].append(date)
+                                if name not in g['artists']:
+                                    g['artists'].append(name)
                                 mm_g['genre']['total'] += 1
                                 if date not in mm_g['genre']['date_mentioned']:
                                     mm_g['genre']['date_mentioned'].append(date)
@@ -76,6 +78,7 @@ def remove_empty(music_mentions):
                     del subgenre["name"]
                     del subgenre["total"]
                     del subgenre["date_mentioned"]
+                    del subgenre["artists"]
             genre["genre"]["subgenres"] = [i for i in genre["genre"]["subgenres"] if len(i) != 0]
     music_mentions["music_mentions"] = [i for i in music_mentions["music_mentions"] if len(i) != 0]
     return music_mentions
